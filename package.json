@@ -1,0 +1,39 @@
+{
+  "name": "nongji-waimao-workbench",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "农机外贸工作台中文开源演示版：产品匹配、报价试算与关税公式辅助。",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/shanheshile/nongji-waimao-workbench#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shanheshile/nongji-waimao-workbench.git"
+  },
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=11.0.0"
+  },
+  "scripts": {
+    "clean": "node scripts/clean-generated.mjs",
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test scripts/*.test.mjs",
+    "verify:licenses": "node scripts/verify-licenses.mjs",
+    "verify:oss": "node scripts/verify-oss.mjs && node scripts/verify-licenses.mjs",
+    "ci": "pnpm run clean && node scripts/verify-oss.mjs && node scripts/verify-licenses.mjs && node --test scripts/*.test.mjs && tsc -b && vite build && pnpm run clean"
+  },
+  "dependencies": {
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7",
+    "@vitejs/plugin-react": "5.0.2",
+    "typescript": "5.9.2",
+    "vite": "7.1.4"
+  }
+}

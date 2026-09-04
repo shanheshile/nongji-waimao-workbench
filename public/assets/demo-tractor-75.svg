@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" role="img" aria-labelledby="title desc">
+  <title id="title">75 马力拖拉机演示占位图</title>
+  <desc id="desc">暖色田野背景上的橙色卡通拖拉机，不对应真实产品。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e8f4ff"/><stop offset="1" stop-color="#fff1d4"/></linearGradient><linearGradient id="body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9f2d"/><stop offset="1" stop-color="#db5b13"/></linearGradient></defs>
+  <rect width="720" height="460" rx="28" fill="url(#bg)"/>
+  <path d="M0 342c150-54 275 30 430-5 112-25 198-26 290 2v121H0Z" fill="#e4d59f"/>
+  <path d="M255 137h175l57 144H238z" fill="#2e4665"/>
+  <path d="M277 158h126l37 91H263z" fill="#bce5f6"/>
+  <path d="M140 243h388c38 0 69 31 69 69v30H121v-76c0-13 8-23 19-23z" fill="url(#body)"/>
+  <path d="M526 251h91l44 72h-83z" fill="#ffe366"/>
+  <rect x="105" y="271" width="110" height="22" rx="8" fill="#87370d"/>
+  <circle cx="232" cy="344" r="75" fill="#222d3b"/><circle cx="232" cy="344" r="38" fill="#b6bec8"/>
+  <circle cx="547" cy="350" r="54" fill="#222d3b"/><circle cx="547" cy="350" r="26" fill="#b6bec8"/>
+  <rect x="448" y="93" width="18" height="156" rx="8" fill="#2e3d4f"/>
+  <text x="42" y="61" fill="#85410d" font-family="sans-serif" font-size="22" font-weight="700">DEMO · FY-754-D</text>
+  <text x="42" y="91" fill="#8f714f" font-family="sans-serif" font-size="15">虚构产品占位素材</text>
+</svg>

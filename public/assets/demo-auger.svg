@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" role="img" aria-labelledby="title desc">
+  <title id="title">挖掘机螺旋钻属具演示占位图</title>
+  <desc id="desc">浅色背景上的蓝色卡通螺旋钻属具，不对应真实产品。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eaf3ff"/><stop offset="1" stop-color="#f1eefc"/></linearGradient></defs>
+  <rect width="720" height="460" rx="28" fill="url(#bg)"/>
+  <path d="M0 377 Q190 334 361 374 T720 360V460H0Z" fill="#d7dfd0"/>
+  <rect x="287" y="83" width="146" height="87" rx="20" fill="#3464c7"/>
+  <rect x="334" y="158" width="52" height="200" rx="22" fill="#294f9e"/>
+  <path d="M334 182c-88 14-87 57 0 71m52-40c88 14 87 57 0 71m-52-1c-88 14-87 57 0 71" fill="none" stroke="#6a91e0" stroke-width="28" stroke-linecap="round"/>
+  <path d="M334 350h52l-26 58z" fill="#1d3b7a"/>
+  <path d="M316 83l44-41 44 41" fill="none" stroke="#364658" stroke-width="17" stroke-linejoin="round"/>
+  <text x="42" y="61" fill="#264c9a" font-family="sans-serif" font-size="22" font-weight="700">DEMO · AU-200-D</text>
+  <text x="42" y="91" fill="#66769a" font-family="sans-serif" font-size="15">虚构产品占位素材</text>
+</svg>

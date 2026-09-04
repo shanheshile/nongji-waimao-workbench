@@ -1,0 +1,9 @@
+农机外贸工作台 · 中文开源演示版
+Copyright 2026 Nongji Waimao Workbench contributors
+
+本项目以 Apache License 2.0 开源。
+
+项目内的产品名称、型号、编码、价格、尺寸、重量、包装、HS 候选、匹配关系和税费输入均为虚构演示数据。
+项目内的 SVG 图片由本项目自制，仅用作界面占位，不代表任何真实品牌或商品。
+
+React、React DOM、Scheduler、Vite、TypeScript 及其构建依赖分别适用其各自许可证；生产依赖声明见 THIRD_PARTY_NOTICES.md，并以对应软件包中的许可文件为准。

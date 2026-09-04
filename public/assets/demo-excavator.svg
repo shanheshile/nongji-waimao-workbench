@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 460" role="img" aria-labelledby="title desc">
+  <title id="title">微型挖掘机演示占位图</title>
+  <desc id="desc">浅蓝背景上的黄色卡通微型挖掘机，不对应真实产品。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e5f3ff"/><stop offset="1" stop-color="#f8f1df"/></linearGradient></defs>
+  <rect width="720" height="460" rx="28" fill="url(#bg)"/>
+  <path d="M0 365c155-35 271 27 427-3 108-21 204-18 293 4v94H0Z" fill="#dddbc5"/>
+  <rect x="238" y="303" width="263" height="65" rx="28" fill="#293746"/>
+  <rect x="272" y="322" width="195" height="27" rx="13" fill="#7a8796"/>
+  <path d="M277 220h180l54 91H245z" fill="#ffc02e"/>
+  <path d="M303 112h117l38 112H281z" fill="#334a64"/>
+  <path d="M319 132h78l24 70h-119z" fill="#a9def1"/>
+  <path d="M300 223L196 122 83 262" fill="none" stroke="#f2a619" stroke-width="28" stroke-linejoin="round"/>
+  <path d="M91 245l-36 89 101-30z" fill="#c97808"/>
+  <circle cx="463" cy="268" r="14" fill="#6f4705"/>
+  <text x="42" y="61" fill="#75510d" font-family="sans-serif" font-size="22" font-weight="700">DEMO · WX-18-D</text>
+  <text x="42" y="91" fill="#817256" font-family="sans-serif" font-size="15">虚构产品占位素材</text>
+</svg>
