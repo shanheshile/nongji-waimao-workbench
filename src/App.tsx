@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { demoProducts, productKindLabels } from './data/demo-products'
 import { calculateTradeQuote, findBidirectionalMatches, isValidHsCode, isValidTaxRate } from './lib/calculator.js'
 import { formatMoney, formatNumber, formatSize } from './lib/format'
+import { buildParameterDisplayRows, normalizeParameterFields } from './lib/product-parameter-view.js'
 import type { DemoProduct, ProductKind, QuoteInputs, QuoteResult, TaxEvidenceContext } from './types'
 
 type View = 'products' | 'quote' | 'tax'
@@ -122,6 +123,8 @@ function ProductCard({
 
 function ParameterPreview({ product }: { product: DemoProduct }) {
   const [mode, setMode] = useState<ParameterView>('compact')
+  const fields = useMemo(() => normalizeParameterFields(product.parameters), [product.parameters])
+  const rows = useMemo(() => buildParameterDisplayRows(product.parameters), [product.parameters])
 
   return (
     <section className="detail-section">
@@ -129,6 +132,7 @@ function ParameterPreview({ product }: { product: DemoProduct }) {
         <div>
           <span className="eyebrow">双语数据</span>
           <h3>产品参数预览</h3>
+          <p>数组、多选和嵌套值逐项保留；相同参数的不同来源不互相覆盖。</p>
         </div>
         <div className="segmented" aria-label="参数显示方式">
           {(
@@ -151,18 +155,49 @@ function ParameterPreview({ product }: { product: DemoProduct }) {
 
       {mode === 'compact' ? (
         <div className="parameter-chips">
-          {product.parameters.slice(0, 4).map((item) => (
-            <span key={`${item.keyZh}-${item.value}`}>
-              <b>{item.keyZh}</b> {item.value}
+          {rows.map((row) => (
+            <span key={row.keyZh} className={row.hasConflict ? 'has-conflict' : ''}>
+              <b>{row.keyZh}</b> {row.displayValues.join('；')}
+              {row.hasConflict ? ' · 冲突待核验' : row.hasPending ? ' · 待确认' : ''}
             </span>
           ))}
         </div>
-      ) : (
+      ) : mode === 'zh' ? (
         <dl className="parameter-list">
-          {product.parameters.map((item) => (
-            <div key={`${item.keyZh}-${item.value}`}>
-              <dt>{mode === 'zh' ? item.keyZh : item.keyEn}</dt>
-              <dd>{item.value}</dd>
+          {rows.map((row) => (
+            <div key={row.keyZh} className={row.hasConflict ? 'has-conflict' : ''}>
+              <dt>
+                {row.keyZh}
+                {row.multiValue ? <span className="parameter-badge">多值 {row.displayValues.length} 项</span> : null}
+                {row.hasConflict ? <span className="parameter-badge conflict">冲突待核验</span> : null}
+                {row.hasPending ? <span className="parameter-badge pending">待确认</span> : null}
+              </dt>
+              <dd>
+                <strong>{row.displayValues.join('；')}</strong>
+                <span className="parameter-evidence">
+                  {row.evidence.map((item) => (
+                    <small key={`${item.fieldIndex}-${item.valueIndex}`}>
+                      {item.display} · {item.sourceZh}
+                      {item.evidenceKind === 'description-candidate' ? '（说明候选）' : '（结构化）'}
+                    </small>
+                  ))}
+                </span>
+                {row.hasConflict ? <em>同一参数存在不同来源值，已全部保留，请回到原始资料核验。</em> : null}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <dl className="parameter-list original-parameter-list">
+          {fields.map((field) => (
+            <div key={`${field.fieldIndex}-${field.keyEn}`}>
+              <dt>{field.keyEn}</dt>
+              <dd>
+                <strong>{field.values.map((item) => item.display).join('；')}</strong>
+                <span className="parameter-evidence">
+                  <small>{field.sourceZh} · 原始字段 {field.fieldIndex + 1}</small>
+                </span>
+              </dd>
             </div>
           ))}
         </dl>

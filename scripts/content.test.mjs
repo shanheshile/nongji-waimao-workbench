@@ -32,4 +32,13 @@ test('界面明确声明离线演示并以空值阻断未核验零税率', async
   assert.match(app, /已阻断税费与 DDP 计算/)
   assert.match(app, /dutyPercent: null/)
   assert.match(app, /自制 SVG 占位素材/)
+  assert.match(app, /数组、多选和嵌套值逐项保留/)
+  assert.match(app, /冲突待核验/)
+})
+
+test('README 明确离线快照不会后台联网更新', async () => {
+  const readme = await readFile(path.join(root, 'README.md'), 'utf8')
+  assert.match(readme, /本仓库没有生产快照接口/)
+  assert.match(readme, /不会定时联网/)
+  assert.match(readme, /旧页面不能宣称已经自动获得最新数据/)
 })

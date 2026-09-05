@@ -31,7 +31,42 @@ export const demoProducts: DemoProduct[] = [
       { keyZh: '标称功率', keyEn: 'Rated power', value: '45 hp' },
       { keyZh: '驱动形式', keyEn: 'Drive type', value: '4WD' },
       { keyZh: '动力输出转速', keyEn: 'PTO speed', value: '540 / 720 rpm' },
-      { keyZh: '液压输出', keyEn: 'Hydraulic outlets', value: '2 组 / 2 pairs' },
+      {
+        keyZh: '变速箱可选配置',
+        keyEn: 'Transmission options',
+        value: {
+          selectedValues: [
+            '8 前进 / 2 后退',
+            { value: 'gear-demo-b', label: '16 前进 / 4 后退' },
+          ],
+        },
+        sourceZh: '虚构结构化选配字段',
+      },
+      {
+        keyZh: '液压输出',
+        keyEn: 'Hydraulic outlets',
+        value: '["2 组液压输出", "后置快换接头", "2 组液压输出"]',
+        sourceZh: '虚构 JSON 多值字段',
+      },
+      {
+        keyZh: '行走速度',
+        keyEn: 'Travel speed',
+        value: '25 km/h',
+        sourceZh: '虚构参数表',
+      },
+      {
+        keyZh: '行走速度',
+        keyEn: 'Travel speed',
+        value: '28 km/h',
+        sourceZh: '虚构说明候选',
+        evidenceKind: 'description-candidate',
+      },
+      {
+        keyZh: '选装备注',
+        keyEn: 'Optional note',
+        value: null,
+        sourceZh: '虚构空字段',
+      },
     ],
     compatibleWith: ['DEMO-IM-RT165', 'DEMO-IM-FL100'],
   },

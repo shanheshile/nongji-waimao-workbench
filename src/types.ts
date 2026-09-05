@@ -1,9 +1,31 @@
 export type ProductKind = 'tractor' | 'implement' | 'excavator'
 
+export type ProductParameterPrimitive = string | number | boolean | null
+
+export interface ProductParameterValueObject {
+  value?: ProductParameterValue
+  name?: ProductParameterValue
+  text?: ProductParameterValue
+  label?: ProductParameterValue
+  selectedValues?: ProductParameterValue[]
+  values?: ProductParameterValue[]
+  items?: ProductParameterValue[]
+  options?: ProductParameterValue[]
+  selected?: boolean
+  checked?: boolean
+}
+
+export type ProductParameterValue =
+  | ProductParameterPrimitive
+  | ProductParameterValue[]
+  | ProductParameterValueObject
+
 export interface ProductParameter {
   keyZh: string
   keyEn: string
-  value: string
+  value: ProductParameterValue
+  sourceZh?: string
+  evidenceKind?: 'structured' | 'description-candidate'
 }
 
 export interface ProductSize {

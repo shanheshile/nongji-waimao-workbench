@@ -619,6 +619,12 @@ main {
   font-size: 12px;
 }
 
+.parameter-chips .has-conflict {
+  color: #8a4317;
+  background: #fff4e8;
+  box-shadow: inset 0 0 0 1px #f5c88f;
+}
+
 .parameter-chips b {
   margin-right: 6px;
   color: #263249;
@@ -655,6 +661,59 @@ main {
   color: #25314a;
   font-size: 12px;
   font-weight: 700;
+}
+
+.parameter-list .has-conflict {
+  background: #fffaf3;
+  box-shadow: inset 3px 0 0 #e88a2b;
+}
+
+.parameter-list dt,
+.parameter-list dd {
+  min-width: 0;
+}
+
+.parameter-list dt > span,
+.parameter-evidence small {
+  display: block;
+}
+
+.parameter-badge {
+  width: fit-content;
+  margin-top: 5px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  color: #175cd3;
+  background: #eff8ff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.parameter-badge.conflict {
+  color: #9a3412;
+  background: #ffedd5;
+}
+
+.parameter-badge.pending {
+  color: #475467;
+  background: #f2f4f7;
+}
+
+.parameter-evidence {
+  display: grid;
+  gap: 3px;
+  margin-top: 6px;
+  color: #667085;
+  font-weight: 400;
+}
+
+.parameter-list dd em {
+  display: block;
+  margin-top: 7px;
+  color: #9a3412;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
 }
 
 .empty-state {
