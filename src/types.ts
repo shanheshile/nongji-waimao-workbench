@@ -1,5 +1,17 @@
 export type ProductKind = 'tractor' | 'implement' | 'excavator'
 
+/**
+ * 产品角色是匹配安全边界，与用于目录筛选的 kind 分开。
+ * 自走整机和备件可以进入目录，但不能被当作拖拉机/挖掘机属具。
+ */
+export type ProductRole =
+  | 'tractor'
+  | 'tractor-implement'
+  | 'excavator'
+  | 'excavator-attachment'
+  | 'self-propelled-machine'
+  | 'spare-part'
+
 export type ProductParameterPrimitive = string | number | boolean | null
 
 export interface ProductParameterValueObject {
@@ -37,6 +49,7 @@ export interface ProductSize {
 export interface DemoProduct {
   id: string
   kind: ProductKind
+  role: ProductRole
   nameZh: string
   nameEn: string
   model: string
@@ -46,6 +59,8 @@ export interface DemoProduct {
   basePriceCny: number
   unitZh: string
   image: string
+  /** 仅可填写已确认归属于同一演示产品的本地 SVG 候选。 */
+  imageFallbacks?: string[]
   summaryZh: string
   summaryEn: string
   machine: {

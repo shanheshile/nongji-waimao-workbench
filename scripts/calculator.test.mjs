@@ -4,6 +4,7 @@ import {
   calculateTradeQuote,
   findBidirectionalMatches,
   getEffectiveRate,
+  isAllowedCompatibilityRolePair,
   isValidHsCode,
   normalizeHsCode,
 } from '../src/lib/calculator.js'
@@ -107,14 +108,39 @@ test('HS 去掉合法分隔点后必须是 6 至 14 位纯数字', () => {
   assert.equal(isValidHsCode('123456789012345'), false)
 })
 
-test('匹配支持选中方和反向关系', () => {
+test('匹配支持选中方和反向关系，但必须通过主机与整体属具角色门禁', () => {
   const products = [
-    { id: 'A', compatibleWith: ['B'] },
-    { id: 'B', compatibleWith: [] },
-    { id: 'C', compatibleWith: ['A'] },
+    { id: 'TR', role: 'tractor', name: '25 hp 拖拉机', compatibleWith: ['PTO', 'REMOTE', 'CLUTCH'] },
+    { id: 'PTO', role: 'tractor-implement', name: '三点悬挂 PTO 割草属具', compatibleWith: [] },
+    { id: 'REMOTE', role: 'self-propelled-machine', name: '25 hp 遥控割草整机', compatibleWith: [] },
+    { id: 'CLUTCH', role: 'spare-part', name: '离合器整套', compatibleWith: [] },
+    { id: 'BELT', role: 'spare-part', name: '刀轴皮带', compatibleWith: ['TR'] },
+    { id: 'MOTOR', role: 'spare-part', name: '驱动电机', compatibleWith: ['TR'] },
   ]
 
-  assert.deepEqual(findBidirectionalMatches(products, 'A').map((item) => item.id), ['B', 'C'])
-  assert.deepEqual(findBidirectionalMatches(products, 'B').map((item) => item.id), ['A'])
+  assert.deepEqual(findBidirectionalMatches(products, 'TR').map((item) => item.id), ['PTO'])
+  assert.deepEqual(findBidirectionalMatches(products, 'PTO').map((item) => item.id), ['TR'])
+  assert.deepEqual(findBidirectionalMatches(products, 'REMOTE'), [])
+  assert.deepEqual(findBidirectionalMatches(products, 'CLUTCH'), [])
+  assert.deepEqual(findBidirectionalMatches(products, 'BELT'), [])
+  assert.deepEqual(findBidirectionalMatches(products, 'MOTOR'), [])
   assert.deepEqual(findBidirectionalMatches(products, 'missing'), [])
+})
+
+test('挖掘机只保留对应整体属具，反向匹配也排除发动机和履带备件', () => {
+  const products = [
+    { id: 'EX', role: 'excavator', compatibleWith: ['AUGER', 'ENGINE', 'TRACK'] },
+    { id: 'AUGER', role: 'excavator-attachment', compatibleWith: [] },
+    { id: 'ENGINE', role: 'spare-part', compatibleWith: [] },
+    { id: 'TRACK', role: 'spare-part', compatibleWith: ['EX'] },
+  ]
+
+  assert.deepEqual(findBidirectionalMatches(products, 'EX').map((item) => item.id), ['AUGER'])
+  assert.deepEqual(findBidirectionalMatches(products, 'AUGER').map((item) => item.id), ['EX'])
+  assert.deepEqual(findBidirectionalMatches(products, 'TRACK'), [])
+  assert.equal(isAllowedCompatibilityRolePair('tractor', 'tractor-implement'), true)
+  assert.equal(isAllowedCompatibilityRolePair('excavator-attachment', 'excavator'), true)
+  assert.equal(isAllowedCompatibilityRolePair('tractor', 'self-propelled-machine'), false)
+  assert.equal(isAllowedCompatibilityRolePair('excavator', 'spare-part'), false)
+  assert.equal(isAllowedCompatibilityRolePair(undefined, 'tractor'), false)
 })

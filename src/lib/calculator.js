@@ -120,6 +120,24 @@ export function calculateTradeQuote(raw) {
   }
 }
 
+const allowedCompatibilityRolePairs = new Set([
+  'tractor:tractor-implement',
+  'tractor-implement:tractor',
+  'excavator:excavator-attachment',
+  'excavator-attachment:excavator',
+])
+
+/**
+ * 只有主机与对应整体属具可以匹配。显式排除自走整机和备件；
+ * 未提供角色时也安全地不匹配，不用名称、马力或类目猜测。
+ * @param {unknown} leftRole
+ * @param {unknown} rightRole
+ */
+export function isAllowedCompatibilityRolePair(leftRole, rightRole) {
+  if (typeof leftRole !== 'string' || typeof rightRole !== 'string') return false
+  return allowedCompatibilityRolePairs.has(`${leftRole}:${rightRole}`)
+}
+
 /**
  * @param {import('../types').DemoProduct[]} products
  * @param {string} productId
@@ -130,9 +148,10 @@ export function findBidirectionalMatches(products, productId) {
 
   return products.filter((candidate) => {
     if (candidate.id === selected.id) return false
-    return (
+    const relationExists = (
       selected.compatibleWith.includes(candidate.id) ||
       candidate.compatibleWith.includes(selected.id)
     )
+    return relationExists && isAllowedCompatibilityRolePair(selected.role, candidate.role)
   })
 }

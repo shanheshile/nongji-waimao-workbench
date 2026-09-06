@@ -10,10 +10,13 @@ test('演示产品数量、ID 与匹配目标一致', async () => {
   const ids = [...source.matchAll(/\bid:\s*'(?<id>DEMO-[A-Z0-9-]+)'/g)].map((match) => match.groups.id)
   const relationBlocks = [...source.matchAll(/compatibleWith:\s*\[(?<targets>[^\]]*)\]/g)]
   const targets = relationBlocks.flatMap((match) => [...match.groups.targets.matchAll(/'(?<id>DEMO-[A-Z0-9-]+)'/g)].map((item) => item.groups.id))
+  const roles = [...source.matchAll(/\brole:\s*'(?<role>[a-z-]+)'/g)].map((match) => match.groups.role)
 
   assert.equal(ids.length, 6)
   assert.equal(new Set(ids).size, ids.length)
   assert.ok(targets.every((target) => ids.includes(target)))
+  assert.equal(roles.length, ids.length)
+  assert.ok(roles.every((role) => ['tractor', 'tractor-implement', 'excavator', 'excavator-attachment'].includes(role)))
 })
 
 test('所有产品图片都由本地 SVG 提供', async () => {
@@ -34,6 +37,8 @@ test('界面明确声明离线演示并以空值阻断未核验零税率', async
   assert.match(app, /自制 SVG 占位素材/)
   assert.match(app, /数组、多选和嵌套值逐项保留/)
   assert.match(app, /冲突待核验/)
+  assert.match(app, /自走整机和备件不会被当作属具/)
+  assert.match(app, /<ProductImage/)
 })
 
 test('README 明确离线快照不会后台联网更新', async () => {

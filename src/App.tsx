@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { ProductImage } from './components/ProductImage'
 import { demoProducts, productKindLabels } from './data/demo-products'
 import { calculateTradeQuote, findBidirectionalMatches, isValidHsCode, isValidTaxRate } from './lib/calculator.js'
 import { formatMoney, formatNumber, formatSize } from './lib/format'
@@ -110,7 +111,13 @@ function ProductCard({
 }) {
   return (
     <button className={`product-card ${active ? 'active' : ''}`} onClick={onSelect}>
-      <img src={product.image} alt={`${product.nameZh}的演示占位图`} />
+      <ProductImage
+        primarySource={product.image}
+        fallbackSources={product.imageFallbacks}
+        alt={`${product.nameZh}的演示图`}
+        loading="lazy"
+        decoding="async"
+      />
       <span className="product-card-copy">
         <span className="eyebrow">{product.categoryZh}</span>
         <strong>{product.nameZh}</strong>
@@ -276,8 +283,13 @@ function ProductWorkspace({
       <article className="product-detail">
         <div className="product-hero">
           <div className="hero-image">
-            <img src={selected.image} alt={`${selected.nameZh}的自制演示占位图`} />
-            <span>自制 SVG 占位素材</span>
+            <ProductImage
+              primarySource={selected.image}
+              fallbackSources={selected.imageFallbacks}
+              alt={`${selected.nameZh}的自制演示图`}
+              decoding="async"
+            />
+            <span className="hero-image-caption">自制 SVG 占位素材</span>
           </div>
           <div className="hero-copy">
             <div className="badge-row">
@@ -333,13 +345,19 @@ function ProductWorkspace({
           <div className="section-heading">
             <span className="eyebrow">关系演示</span>
             <h3>双向匹配</h3>
-            <p>拖拉机可找农机具，农机具可反查拖拉机；挖掘机与属具同样双向关联。</p>
+            <p>稳定 ID 关系命中后仍需通过主机/整体属具角色门禁；自走整机和备件不会被当作属具。</p>
           </div>
           {matches.length ? (
             <div className="match-grid">
               {matches.map((product) => (
                 <button key={product.id} onClick={() => setSelected(product)}>
-                  <img src={product.image} alt="" />
+                  <ProductImage
+                    primarySource={product.image}
+                    fallbackSources={product.imageFallbacks}
+                    alt={`${product.nameZh}的演示图`}
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <span><b>{product.nameZh}</b><small>{product.model}</small></span>
                   <i>查看 →</i>
                 </button>

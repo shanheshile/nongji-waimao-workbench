@@ -7,6 +7,7 @@ export const demoProducts: DemoProduct[] = [
   {
     id: 'DEMO-TR-45',
     kind: 'tractor',
+    role: 'tractor',
     nameZh: '青禾 45 马力轮式拖拉机（演示）',
     nameEn: 'Greenfield 45 HP Wheel Tractor (Demo)',
     model: 'QH-454-D',
@@ -73,6 +74,7 @@ export const demoProducts: DemoProduct[] = [
   {
     id: 'DEMO-TR-75',
     kind: 'tractor',
+    role: 'tractor',
     nameZh: '丰原 75 马力轮式拖拉机（演示）',
     nameEn: 'FieldPro 75 HP Wheel Tractor (Demo)',
     model: 'FY-754-D',
@@ -104,6 +106,7 @@ export const demoProducts: DemoProduct[] = [
   {
     id: 'DEMO-IM-RT165',
     kind: 'implement',
+    role: 'tractor-implement',
     nameZh: '旋耕机 1.65 米（演示）',
     nameEn: '1.65 m Rotary Tiller (Demo)',
     model: 'RT-165-D',
@@ -135,6 +138,7 @@ export const demoProducts: DemoProduct[] = [
   {
     id: 'DEMO-IM-FL100',
     kind: 'implement',
+    role: 'tractor-implement',
     nameZh: '前装载机套件（演示）',
     nameEn: 'Front Loader Kit (Demo)',
     model: 'FL-100-D',
@@ -166,6 +170,7 @@ export const demoProducts: DemoProduct[] = [
   {
     id: 'DEMO-EX-18',
     kind: 'excavator',
+    role: 'excavator',
     nameZh: '微型挖掘机 1.8 吨（演示）',
     nameEn: '1.8 t Mini Excavator (Demo)',
     model: 'WX-18-D',
@@ -197,6 +202,7 @@ export const demoProducts: DemoProduct[] = [
   {
     id: 'DEMO-AT-AU200',
     kind: 'implement',
+    role: 'excavator-attachment',
     nameZh: '挖掘机螺旋钻属具（演示）',
     nameEn: 'Excavator Auger Attachment (Demo)',
     model: 'AU-200-D',

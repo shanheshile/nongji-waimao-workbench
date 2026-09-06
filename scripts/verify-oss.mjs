@@ -37,7 +37,10 @@ for (const generatedPath of ['dist', 'tsconfig.app.tsbuildinfo', 'tsconfig.node.
 const allowedExternalHosts = new Set(['github.com', 'docs.github.com', 'www.apache.org', 'www.w3.org'])
 const externalUrlPattern = /https?:\/\/[^\s"'<>`)]+/gi
 const forbiddenPrivateFieldPattern = /\b(?:private|internal|tenant|customer|supplier|factory|employee)(?:Id|Name|Address|Price|Token)\s*[:=]/i
-const networkCallPattern = new RegExp(`${'fe' + 'tch'}\\s*\\(|XMLHttpRequest|new\\s+WebSocket`, 'i')
+const networkCallPattern = new RegExp(
+  `${'fe' + 'tch'}\\s*\\(|XMLHttpRequest|new\\s+WebSocket|new\\s+EventSource|sendBeacon\\s*\\(`,
+  'i',
+)
 const credentialName = ['pass', 'word'].join('') + '|to' + 'ken|se' + 'cret|api[_-]?' + 'key'
 const credentialAssignmentPattern = new RegExp(`(?:${credentialName})\\s*[:=]\\s*["'][^"'\\n]{6,}["']`, 'i')
 const secretMaterialPatterns = [
