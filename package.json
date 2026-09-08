@@ -26,12 +26,12 @@
     "ci": "pnpm run clean && node scripts/verify-oss.mjs && node scripts/verify-licenses.mjs && node --test scripts/*.test.mjs && tsc -b && vite build && pnpm run clean"
   },
   "dependencies": {
-    "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@types/react": "19.1.10",
-    "@types/react-dom": "19.1.7",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
     "@vitejs/plugin-react": "5.0.2",
     "typescript": "5.9.2",
     "vite": "7.3.6"
