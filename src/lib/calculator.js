@@ -2,12 +2,27 @@
 /** @typedef {import('../types').QuoteResult} QuoteResult */
 
 /**
+ * 仅为现有外部演示调用保留的通用数值转换函数。
+ * 报价输入不得使用该函数降级，必须经下方严格校验。
  * @param {unknown} value
  * @param {number} [fallback]
  */
 export function finiteNumber(value, fallback = 0) {
   const parsed = Number(value)
   return Number.isFinite(parsed) ? parsed : fallback
+}
+
+/**
+ * 报价金额、汇率与加价率必须是显式传入的有限非负 number。
+ * 禁止把空值、字符串、NaN、Infinity 或负数静默转换为 0。
+ * @param {unknown} value
+ * @param {string} label
+ */
+function validatedNonNegativeNumber(value, label) {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) {
+    throw new RangeError(`${label}必须是有限且非负的数值`)
+  }
+  return value
 }
 
 /**
@@ -54,7 +69,9 @@ function validatedOptionalTaxRate(value, label) {
  * @param {number} rateBuffer
  */
 export function getEffectiveRate(spotRate, rateBuffer) {
-  const effective = finiteNumber(spotRate) - finiteNumber(rateBuffer)
+  const validatedSpotRate = validatedNonNegativeNumber(spotRate, '市场汇率')
+  const validatedRateBuffer = validatedNonNegativeNumber(rateBuffer, '汇率差额')
+  const effective = validatedSpotRate - validatedRateBuffer
   if (effective <= 0) {
     throw new RangeError('有效汇率必须大于 0')
   }
@@ -67,17 +84,17 @@ export function getEffectiveRate(spotRate, rateBuffer) {
  * @returns {QuoteResult}
  */
 export function calculateTradeQuote(raw) {
-  const basePriceCny = Math.max(0, finiteNumber(raw.basePriceCny))
-  const markupPercent = finiteNumber(raw.markupPercent)
+  const basePriceCny = validatedNonNegativeNumber(raw.basePriceCny, '人民币底价')
+  const markupPercent = validatedNonNegativeNumber(raw.markupPercent, '利润加价率')
   const effectiveRate = getEffectiveRate(raw.spotRate, raw.rateBuffer)
-  const domesticCostCny = Math.max(0, finiteNumber(raw.domesticCostCny))
-  const freightForeign = Math.max(0, finiteNumber(raw.freightForeign))
-  const insuranceForeign = Math.max(0, finiteNumber(raw.insuranceForeign))
+  const domesticCostCny = validatedNonNegativeNumber(raw.domesticCostCny, '国内出口费用')
+  const freightForeign = validatedNonNegativeNumber(raw.freightForeign, '国际运费')
+  const insuranceForeign = validatedNonNegativeNumber(raw.insuranceForeign, '保险费')
   const dutyPercent = validatedOptionalTaxRate(raw.dutyPercent, '关税率')
   const vatPercent = validatedOptionalTaxRate(raw.vatPercent, 'VAT / 进口税率')
   const taxRatesEntered = dutyPercent !== null && vatPercent !== null
-  const taxableAdditionsForeign = Math.max(0, finiteNumber(raw.taxableAdditionsForeign))
-  const otherImportCostForeign = Math.max(0, finiteNumber(raw.otherImportCostForeign))
+  const taxableAdditionsForeign = validatedNonNegativeNumber(raw.taxableAdditionsForeign, '其他应税加项')
+  const otherImportCostForeign = validatedNonNegativeNumber(raw.otherImportCostForeign, '其他进口侧费用')
 
   const salePriceCny = basePriceCny * (1 + markupPercent / 100)
   const grossProfitCny = salePriceCny - basePriceCny
@@ -101,6 +118,11 @@ export function calculateTradeQuote(raw) {
     vat = vatBase * (vatPercent / 100)
     taxes = duty + vat
     ddp = cif + taxes + otherImportCostForeign
+  }
+
+  const calculatedValues = [salePriceCny, grossProfitCny, grossMarginPercent, exw, fob, cif, duty, vatBase, vat, taxes, ddp]
+  if (calculatedValues.some((value) => value !== null && !Number.isFinite(value))) {
+    throw new RangeError('输入数值过大，报价结果无法表示')
   }
 
   return {

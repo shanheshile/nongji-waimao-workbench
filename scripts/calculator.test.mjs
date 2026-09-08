@@ -12,6 +12,11 @@ import {
 test('有效汇率按市场汇率减去汇率差额计算', () => {
   assert.equal(getEffectiveRate(7.2, 0.2), 7)
   assert.throws(() => getEffectiveRate(0.2, 0.2), /必须大于 0/)
+  assert.throws(() => getEffectiveRate(/** @type {any} */ ('7.2'), 0.2), /市场汇率必须是有限且非负/)
+  assert.throws(() => getEffectiveRate(Number.NaN, 0.2), /市场汇率必须是有限且非负/)
+  assert.throws(() => getEffectiveRate(Infinity, 0.2), /市场汇率必须是有限且非负/)
+  assert.throws(() => getEffectiveRate(7.2, -0.1), /汇率差额必须是有限且非负/)
+  assert.throws(() => getEffectiveRate(7.2, /** @type {any} */ ('0.2')), /汇率差额必须是有限且非负/)
 })
 
 test('EXW、FOB、CIF、关税、VAT 与 DDP 逐项可复算', () => {
@@ -93,6 +98,55 @@ test('负数和非有限税率被拒绝而不是静默降级为零', () => {
   assert.throws(
     () => calculateTradeQuote({ ...base, dutyPercent: /** @type {any} */ ('0'), vatPercent: 0 }),
     /关税率必须是有限且非负/,
+  )
+})
+
+test('负数、空值转换和非有限报价输入被拒绝而不会生成伪报价', () => {
+  const base = {
+    basePriceCny: 100,
+    markupPercent: 10,
+    spotRate: 7.2,
+    rateBuffer: 0.2,
+    domesticCostCny: 10,
+    freightForeign: 20,
+    insuranceForeign: 1,
+    dutyPercent: null,
+    vatPercent: null,
+    taxableAdditionsForeign: 0,
+    otherImportCostForeign: 0,
+  }
+
+  const fields = [
+    ['basePriceCny', /人民币底价必须是有限且非负/],
+    ['markupPercent', /利润加价率必须是有限且非负/],
+    ['domesticCostCny', /国内出口费用必须是有限且非负/],
+    ['freightForeign', /国际运费必须是有限且非负/],
+    ['insuranceForeign', /保险费必须是有限且非负/],
+    ['taxableAdditionsForeign', /其他应税加项必须是有限且非负/],
+    ['otherImportCostForeign', /其他进口侧费用必须是有限且非负/],
+  ]
+
+  for (const [field, expected] of fields) {
+    for (const invalid of [-1, Number.NaN, Infinity, '', '1']) {
+      assert.throws(
+        () => calculateTradeQuote({ ...base, [field]: /** @type {any} */ (invalid) }),
+        expected,
+      )
+    }
+  }
+  assert.doesNotThrow(() => calculateTradeQuote({
+    ...base,
+    basePriceCny: 0,
+    markupPercent: 0,
+    domesticCostCny: 0,
+    freightForeign: 0,
+    insuranceForeign: 0,
+    taxableAdditionsForeign: 0,
+    otherImportCostForeign: 0,
+  }))
+  assert.throws(
+    () => calculateTradeQuote({ ...base, basePriceCny: Number.MAX_VALUE, markupPercent: 100 }),
+    /输入数值过大/,
   )
 })
 

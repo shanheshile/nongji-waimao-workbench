@@ -48,10 +48,10 @@ function NumberField({
       <span className="input-with-suffix">
         <input
           type="number"
-          value={value}
+          value={Number.isFinite(value) ? value : ''}
           min={min}
           step={step}
-          onChange={(event) => onChange(Number(event.target.value))}
+          onChange={(event) => onChange(event.currentTarget.valueAsNumber)}
         />
         {suffix ? <span>{suffix}</span> : null}
       </span>
@@ -414,6 +414,7 @@ function QuoteWorkspace({
           <NumberField
             label="手动利润加价率"
             value={quote.markupPercent}
+            min={0}
             suffix="%"
             step={0.1}
             onChange={(value) => update('markupPercent', value)}
@@ -481,7 +482,7 @@ function QuoteWorkspace({
               <div><span>CIF</span><strong>{formatMoney(result.cif, currency)}</strong><small>FOB + 运费 + 保险</small></div>
               <div className="highlight"><span>DDP 公式演示</span><strong>{taxEvidenceComplete && result.ddp !== null ? formatMoney(result.ddp, currency) : '待补官方税费证据'}</strong><small>{taxEvidenceComplete ? 'CIF + 已输入税费 + 其他进口费用' : '需完整原产国、目的国、HS、关税率与 VAT 税率'}</small></div>
             </>
-          ) : <p className="empty-state">汇率输入无效，暂不计算。</p>}
+          ) : <p className="empty-state">报价输入无效，暂不计算。</p>}
         </div>
         <div className="formula-note">
           <b>这不是对客报价：</b>包装费、港杂、清关、派送、认证、反倾销、非从价税等可能尚未包含；本页不保存输入。

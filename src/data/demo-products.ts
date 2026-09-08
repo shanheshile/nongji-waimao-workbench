@@ -17,6 +17,7 @@ export const demoProducts: DemoProduct[] = [
     basePriceCny: 128000,
     unitZh: '台',
     image: '/assets/demo-tractor-45.svg',
+    imageFallbacks: ['/assets/demo-tractor-45-side.svg'],
     summaryZh: '虚构的紧凑型四轮驱动拖拉机，用于演示农机具匹配与报价试算。',
     summaryEn: 'Fictional compact four-wheel-drive tractor for matching and quotation demos.',
     machine: {
